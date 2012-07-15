@@ -59,7 +59,14 @@ namespace SportsStore.WebUI
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 
-            ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory());
+
+            DependencyResolver.SetResolver(new NinjectDependencyResolver());
+            
+            /*Obsolete ControlerFactory which was used initally before implementation of NinjectDependencyResolver.class
+            that basically sets Ninject at the heart of "Dependency Injection" and reduces the number of current NinjectKernels throughtout the application*/
+
+            //ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory()); 
+            
             ModelBinders.Binders.Add(typeof(Cart), new CartModelBinder());
         }
     }

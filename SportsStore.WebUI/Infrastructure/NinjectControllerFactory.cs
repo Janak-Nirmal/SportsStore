@@ -10,6 +10,8 @@ using SportsStore.Domain.Abstract;
 using Moq;
 using SportsStore.Domain.Concrete;
 using System.Configuration;
+using SportsStore.WebUI.Infrastructure.Abstract;
+using SportsStore.WebUI.Infrastructure.Concrete;
 
 namespace SportsStore.WebUI.Infrastructure
 {
@@ -30,13 +32,6 @@ namespace SportsStore.WebUI.Infrastructure
         }
         private void AddBindings()
         {
-            // Mock implementation of the IProductRepository Interface
-            //Mock<IProductRepository> mock = new Mock<IProductRepository>();
-            //mock.Setup(m => m.Products).Returns(new List<Product> {
-            //        new Product { Name = "Football", Price = 25 },
-            //        new Product { Name = "Surf board", Price = 179 },
-            //        new Product { Name = "Running shoes", Price = 95 }
-            //        }.AsQueryable());
 
             ninjectKernel.Bind<IProductRepository>().To<EFProductRepository>();
 
@@ -46,6 +41,7 @@ namespace SportsStore.WebUI.Infrastructure
                 = bool.Parse(ConfigurationManager.AppSettings["Email.WriteAsFile"] ?? "false")
             };
             ninjectKernel.Bind<IOrderProcessor>().To<EmailOrderProcessor>().WithConstructorArgument("settings", emailSettings);
+            ninjectKernel.Bind<IAuthProvider>().To<FormsAuthProvider>();
         }
     }
 }
